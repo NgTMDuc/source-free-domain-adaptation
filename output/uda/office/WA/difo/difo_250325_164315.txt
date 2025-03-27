@@ -1,0 +1,196 @@
+[25/03/25 16:43:15] [conf.py:  393]: PyTorch Version: torch=2.4.1+cu121, cuda=12.1
+[25/03/25 16:43:15] [conf.py:  394]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.2
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: /mnt/disk1/ducntm/DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.2
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: difo_250325_164315.txt
+LOG_TIME: 250325_164315
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet50
+  EPISODIC: False
+  METHOD: difo
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 5
+  KK: 4
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.01
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.001
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: office
+  OUTPUT_SRC: source
+  S: 2
+  SEED: 2020
+  T: 0
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 15
+  MAX_EPOCH: 15
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 512
+class_num: 31
+domain: ['amazon', 'dslr', 'webcam']
+name: WA
+name_file: ./data/office/classname.txt
+name_src: W
+output_dir: ./output/uda/office/WA/difo
+output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/office/W
+[25/03/25 16:43:24] [difo.py:  325]: Accuracy = 61.38% -> CLIP_Accuracy  = 75.97%
+[25/03/25 16:43:36] [difo.py:  267]: Task: WA, Iter:45/675; Accuracy = 74.33%;loss =-6.300451714401236
+[25/03/25 16:43:38] [difo.py:  325]: Accuracy = 74.33% -> CLIP_Accuracy  = 81.36%
+[25/03/25 16:43:49] [difo.py:  267]: Task: WA, Iter:90/675; Accuracy = 78.31%;loss =-6.546563423185064
+[25/03/25 16:43:52] [difo.py:  325]: Accuracy = 78.31% -> CLIP_Accuracy  = 81.36%
+[25/03/25 16:44:03] [difo.py:  267]: Task: WA, Iter:135/675; Accuracy = 79.77%;loss =-7.271093097072432
+[25/03/25 16:44:05] [difo.py:  325]: Accuracy = 79.77% -> CLIP_Accuracy  = 82.00%
+[25/03/25 16:44:17] [difo.py:  267]: Task: WA, Iter:180/675; Accuracy = 80.69%;loss =-7.316737227046929
+[25/03/25 16:44:19] [difo.py:  325]: Accuracy = 80.69% -> CLIP_Accuracy  = 81.22%
+[25/03/25 16:44:30] [difo.py:  267]: Task: WA, Iter:225/675; Accuracy = 81.33%;loss =-7.0782312435422075
+[25/03/25 16:44:33] [difo.py:  325]: Accuracy = 81.33% -> CLIP_Accuracy  = 79.30%
+[25/03/25 16:44:44] [difo.py:  267]: Task: WA, Iter:270/675; Accuracy = 81.72%;loss =-7.594723330312566
+[25/03/25 16:44:47] [difo.py:  325]: Accuracy = 81.72% -> CLIP_Accuracy  = 82.57%
+[25/03/25 16:44:58] [difo.py:  267]: Task: WA, Iter:315/675; Accuracy = 82.11%;loss =-7.21419545784043
+[25/03/25 16:45:01] [difo.py:  325]: Accuracy = 82.11% -> CLIP_Accuracy  = 82.64%
+[25/03/25 16:45:12] [difo.py:  267]: Task: WA, Iter:360/675; Accuracy = 82.29%;loss =-7.265778378057441
+[25/03/25 16:45:15] [difo.py:  325]: Accuracy = 82.29% -> CLIP_Accuracy  = 82.07%
+[25/03/25 16:45:26] [difo.py:  267]: Task: WA, Iter:405/675; Accuracy = 82.32%;loss =-7.5483629468795925
+[25/03/25 16:45:28] [difo.py:  325]: Accuracy = 82.32% -> CLIP_Accuracy  = 81.97%
+[25/03/25 16:45:40] [difo.py:  267]: Task: WA, Iter:450/675; Accuracy = 82.46%;loss =-7.450645231355316
+[25/03/25 16:45:42] [difo.py:  325]: Accuracy = 82.46% -> CLIP_Accuracy  = 81.11%
+[25/03/25 16:45:54] [difo.py:  267]: Task: WA, Iter:495/675; Accuracy = 82.64%;loss =-7.637214167395532
+[25/03/25 16:45:56] [difo.py:  325]: Accuracy = 82.64% -> CLIP_Accuracy  = 82.64%
+[25/03/25 16:46:07] [difo.py:  267]: Task: WA, Iter:540/675; Accuracy = 82.93%;loss =-7.667062146678444
+[25/03/25 16:46:10] [difo.py:  325]: Accuracy = 82.93% -> CLIP_Accuracy  = 80.76%
+[25/03/25 16:46:21] [difo.py:  267]: Task: WA, Iter:585/675; Accuracy = 82.71%;loss =-8.075840311471302
+[25/03/25 16:46:24] [difo.py:  325]: Accuracy = 82.71% -> CLIP_Accuracy  = 81.75%
+[25/03/25 16:46:35] [difo.py:  267]: Task: WA, Iter:630/675; Accuracy = 83.03%;loss =-7.831347719635281
+[25/03/25 16:46:38] [difo.py:  325]: Accuracy = 83.03% -> CLIP_Accuracy  = 82.36%
+[25/03/25 16:46:48] [difo.py:  267]: Task: WA, Iter:675/675; Accuracy = 83.39%;loss =-7.911034319458151

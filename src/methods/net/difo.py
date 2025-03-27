@@ -62,9 +62,11 @@ def op_copy(optimizer):
 
 
 def train_target(cfg):
+    # Load clip model
     clip_model, preprocess,_ = clip.load(cfg.DIFO.ARCH)
     clip_model.float()
-    text_inputs = clip_pre_text(cfg)
+    text_inputs = clip_pre_text(cfg) # Initiaize text embedding
+
     if 'image' in cfg.SETTING.DATASET:
         if cfg.MODEL.ARCH[0:3] == 'res':
             netF = network.ResBase(res_name=cfg.MODEL.ARCH)
@@ -86,6 +88,7 @@ def train_target(cfg):
             base_model = ImageNetXWrapper(base_model, IMAGENET_V_MASK)
     else :
         base_model = get_model(cfg, cfg.class_num)
+    # Loading base model
     base_model = base_model.cuda()
 
     param_group = []
@@ -119,9 +122,10 @@ def train_target(cfg):
                                     workers=cfg.NUM_WORKERS)
 
 
-    num_sample=len(target_data_loader.dataset)
+    num_sample=len(target_data_loader.dataset) # Take the number of samples from the dataset
     score_bank = torch.randn(num_sample, cfg.class_num).cuda()
     base_model.eval()
+    # Initialize the score bank base on the prediction of the source model
     with torch.no_grad():
         iter_test = iter(target_data_loader)
         for i in range(len(target_data_loader)):
@@ -132,9 +136,9 @@ def train_target(cfg):
             outputs = base_model(inputs)
             outputs=nn.Softmax(dim=1)(outputs)
             score_bank[indx] = outputs.detach().clone()
-
+    # Number of iterations where MAX_EPOCH is the number of epochs and len(target_data_loader) is the number of batch in an epoch/
     max_iter = cfg.TEST.MAX_EPOCH * len(target_data_loader)
-    interval_iter = max_iter // cfg.TEST.INTERVAL
+    interval_iter = max_iter // cfg.TEST.INTERVAL # How often certain operations should be performed
     iter_num = 0
     text_features = None
 
@@ -149,8 +153,12 @@ def train_target(cfg):
 
         if iter_num % interval_iter == 0 and cfg.DIFO.CLS_PAR > 0:
             base_model.eval()
-            confi_imag,confi_dis,clip_all_output = obtain_label(test_data_loader,base_model,text_inputs,text_features,clip_model)
+            # confi_imag: some metadata about the image
+            # confi_dis: predictions of mix between the source and the clip model
+            # clip_all_output: predictions of clip model
+            confi_imag, confi_dis, clip_all_output = obtain_label(test_data_loader,base_model,text_inputs,text_features,clip_model)
             clip_all_output = clip_all_output.cuda()
+            # Get the image features
             text_features = prompt_tuning.prompt_main(cfg,confi_imag,confi_dis,iter_num)
             cfg.load = 'prompt_model.pt'
             base_model.train()
@@ -217,7 +225,12 @@ def train_target(cfg):
 
     return base_model
 
-def obtain_label(loader, model,text_inputs,text_features,clip_model):
+def obtain_label(loader,
+                  model, #source model
+                  text_inputs, # text to the model
+                  text_features, # text features that already changed
+                  clip_model # clip moodel
+                  ):
     start_test = True
     with torch.no_grad():
         iter_test = iter(loader)
@@ -232,6 +245,7 @@ def obtain_label(loader, model,text_inputs,text_features,clip_model):
             else :
                 clip_score,_ = clip_model(inputs, text_inputs)
 
+            # Prediction of clip moedl
             clip_score = clip_score.cpu()
             if start_test:
                 all_output = outputs.float().cpu()
@@ -242,13 +256,16 @@ def obtain_label(loader, model,text_inputs,text_features,clip_model):
                 all_output = torch.cat((all_output, outputs.float().cpu()), 0)
                 all_label = torch.cat((all_label, labels.float()), 0)
                 all_clip_score = torch.cat((all_clip_score, clip_score.float()), 0)
-                
+    # CLIP model prediction
     clip_all_output = nn.Softmax(dim=1)(all_clip_score).cpu()
     _, predict_clip = torch.max(clip_all_output, 1)  
     accuracy_clip = torch.sum(torch.squeeze(predict_clip).float() == all_label).item() / float(all_label.size()[0])
-
+    
+    # Source model prediction
     all_output = nn.Softmax(dim=1)(all_output)
     _, predict = torch.max(all_output, 1)
+
+    #Concate the predictions in \eq
     all_mix_output = (all_output+clip_all_output)/2
 
     confi_dis = all_mix_output.detach()

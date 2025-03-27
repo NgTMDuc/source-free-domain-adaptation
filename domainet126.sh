@@ -16,7 +16,7 @@ for s in ${s_list[*]}; do
         then
         continue
     fi
-        CUDA_VISIBLE_DEVICES=1 ~/anaconda3/envs/sfa_susu/bin/python image_target_of_oh_vs.py --cfg "cfgs/${DATASET}/${METHOD}.yaml" \
+        python image_target_in_126.py --cfg "cfgs/${DATASET}/${METHOD}.yaml" \
             SETTING.S "$s" SETTING.T "$t" &
         wait
     done
