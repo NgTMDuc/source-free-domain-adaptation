@@ -106,7 +106,7 @@ def get_test_loader(adaptation, dataset_name, root_dir, domain_name,rng_seed, ba
     else:
         if dataset_name in {"imagenet_k", "imagenet_r", "imagenet_a","imagenet_v"}:
             test_dataset = torchvision.datasets.ImageFolder(root=data_dir, transform=transform)
-        elif dataset_name in {"domainnet126"}:
+        elif dataset_name in {"domainnet126", "VISDA-C"}:
             data_files = [os.path.join("./data", f"{dataset_name}", domain_name + "_list.txt")]
             test_dataset = ImageList(image_root=data_dir,
                                      label_files=data_files,
@@ -115,7 +115,7 @@ def get_test_loader(adaptation, dataset_name, root_dir, domain_name,rng_seed, ba
             raise ValueError(f"Dataset '{dataset_name}' is not supported!")
 
     return torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=workers, drop_last=False)
-
+# /mnt/disk1/ducntm/DATA/VISDA-C/validation/train/train_173592.jpg
 def get_test_loader_aug(adaptation, dataset_name, root_dir, domain_name, rng_seed, batch_size=128, shuffle=False, workers=4):
 
     # Fix seed again to ensure that the test sequence is the same for all methods

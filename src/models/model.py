@@ -77,6 +77,8 @@ def get_timm_model(model_name):
 
     return model
 
+class ResNetVisda(torch.nn.Module):
+    pass
 
 class ResNetDomainNet126(torch.nn.Module):
     """
@@ -285,6 +287,8 @@ def get_model(cfg, num_classes):
     if cfg.SETTING.DATASET == "domainnet126":
         cfg.output_dir_src = osp.join(cfg.output_dir_src,'best_' + cfg.domain[cfg.SETTING.S] +'_2020.pth')
         base_model = ResNetDomainNet126(arch=cfg.MODEL.ARCH, checkpoint_path=cfg.output_dir_src, num_classes=num_classes)
+    elif cfg.SETTING.DATASET == "VISDA-C":
+        cfg.output_dir_src = osp.join(cfg.output_dir_src, "I/")
     else:
         base_model = get_torchvision_model(cfg.MODEL.ARCH, weight_version=cfg.MODEL.WEIGHTS)
         layers = OrderedDict([

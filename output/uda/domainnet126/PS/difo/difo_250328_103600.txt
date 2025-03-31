@@ -1,5 +1,5 @@
-[25/03/27 16:01:52] [conf.py:  393]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
-[25/03/27 16:01:52] [conf.py:  394]: ADACONTRAST:
+[25/03/28 10:36:00] [conf.py:  393]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/03/28 10:36:00] [conf.py:  394]: ADACONTRAST:
   ALPHA: 1.0
   BETA: 1.0
   CE_SUP_TYPE: weak_strong
@@ -63,8 +63,8 @@ LCFD:
   LOSS_FUNC: sce
   N_CTX: 4
   TTA_STEPS: 1
-LOG_DEST: difo_250327_160152.txt
-LOG_TIME: 250327_160152
+LOG_DEST: difo_250328_103600.txt
+LOG_TIME: 250328_103600
 MODEL:
   ADAPTATION: source
   ARCH: resnet50
@@ -121,9 +121,9 @@ SCLM:
 SETTING:
   DATASET: domainnet126
   OUTPUT_SRC: source
-  S: 2
+  S: 1
   SEED: 2020
-  T: 0
+  T: 3
 SHOT:
   CLS_PAR: 0.3
   DISTANCE: cosine
@@ -159,12 +159,9 @@ TSD:
 bottleneck: 256
 class_num: 126
 domain: ['clipart', 'painting', 'real', 'sketch']
-name: RC
+name: PS
 name_file: ./data/domainnet126/classname.txt
-name_src: R
-output_dir: ./output/uda/domainnet126/RC/difo
-output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/R
-[25/03/27 16:01:55] [model.py:  139]: Loaded from /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/R/best_real_2020.pth; missing params: []
-[25/03/27 16:02:53] [difo.py:  275]: Accuracy = 55.29% -> CLIP_Accuracy  = 74.74%
-[25/03/27 16:04:43] [difo.py:  220]: Task: RC, Iter:290/4350; Accuracy = 75.17%;loss =-9.332013906816943
-[25/03/27 16:05:08] [difo.py:  275]: Accuracy = 75.17% -> CLIP_Accuracy  = 76.33%
+name_src: P
+output_dir: ./output/uda/domainnet126/PS/difo
+output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/P
+[25/03/28 10:36:02] [model.py:  139]: Loaded from /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/P/best_painting_2020.pth; missing params: []

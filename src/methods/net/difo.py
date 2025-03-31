@@ -124,6 +124,7 @@ def train_target(cfg):
 
     num_sample=len(target_data_loader.dataset) # Take the number of samples from the dataset
     score_bank = torch.randn(num_sample, cfg.class_num).cuda()
+    print(score_bank.shape)
     base_model.eval()
     # Initialize the score bank base on the prediction of the source model
     with torch.no_grad():

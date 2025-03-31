@@ -405,7 +405,7 @@ def complete_data_dir_path(root, dataset_name):
                "imagenet_d109": "imagenet-d",   # do not change
                "domainnet126": "DomainNet-126", # directory containing the 6 splits of "cleaned versions" from http://ai.bu.edu/M3SDA/#dataset
                "office31": "office-31",
-               "visda": "visda-2017",
+               "VISDA-C": "VISDA-C",
                "cifar10": "",  # do not change the following values
                "cifar10_c": "",
                "cifar100": "",

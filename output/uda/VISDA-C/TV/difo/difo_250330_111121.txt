@@ -1,5 +1,5 @@
-[25/03/27 16:48:49] [conf.py:  393]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
-[25/03/27 16:48:49] [conf.py:  394]: ADACONTRAST:
+[25/03/30 11:11:21] [conf.py:  393]: PyTorch Version: torch=2.4.1+cu121, cuda=12.1
+[25/03/30 11:11:21] [conf.py:  394]: ADACONTRAST:
   ALPHA: 1.0
   BETA: 1.0
   CE_SUP_TYPE: weak_strong
@@ -63,11 +63,11 @@ LCFD:
   LOSS_FUNC: sce
   N_CTX: 4
   TTA_STEPS: 1
-LOG_DEST: difo_250327_164849.txt
-LOG_TIME: 250327_164849
+LOG_DEST: difo_250330_111121.txt
+LOG_TIME: 250330_111121
 MODEL:
   ADAPTATION: source
-  ARCH: resnet50
+  ARCH: resnet101
   EPISODIC: False
   METHOD: difo
   WEIGHTS: IMAGENET1K_V1
@@ -119,11 +119,11 @@ SCLM:
   NEW_ENT_PAR: 0.3
   THRESHOLD: 0.0
 SETTING:
-  DATASET: domainnet126
+  DATASET: VISDA-C
   OUTPUT_SRC: source
-  S: 2
+  S: 0
   SEED: 2020
-  T: 3
+  T: 1
 SHOT:
   CLS_PAR: 0.3
   DISTANCE: cosine
@@ -156,27 +156,11 @@ TSD:
   LOAD: None
   N_CTX: 4
   TTA_STEPS: 1
-bottleneck: 256
-class_num: 126
-domain: ['clipart', 'painting', 'real', 'sketch']
-name: RS
-name_file: ./data/domainnet126/classname.txt
-name_src: R
-output_dir: ./output/uda/domainnet126/RS/difo
-output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/R
-[25/03/27 16:48:51] [model.py:  139]: Loaded from /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/R/best_real_2020.pth; missing params: []
-[25/03/27 16:49:33] [difo.py:  275]: Accuracy = 46.42% -> CLIP_Accuracy  = 71.16%
-[25/03/27 16:50:53] [difo.py:  220]: Task: RS, Iter:378/5670; Accuracy = 69.82%;loss =-8.71351318278672
-[25/03/27 16:51:15] [difo.py:  275]: Accuracy = 69.82% -> CLIP_Accuracy  = 71.92%
-[25/03/27 16:52:34] [difo.py:  220]: Task: RS, Iter:756/5670; Accuracy = 72.26%;loss =-9.04197128442705
-[25/03/27 16:52:56] [difo.py:  275]: Accuracy = 72.26% -> CLIP_Accuracy  = 72.70%
-[25/03/27 16:54:15] [difo.py:  220]: Task: RS, Iter:1134/5670; Accuracy = 73.67%;loss =-9.594247887327853
-[25/03/27 16:54:37] [difo.py:  275]: Accuracy = 73.67% -> CLIP_Accuracy  = 72.92%
-[25/03/27 16:55:56] [difo.py:  220]: Task: RS, Iter:1512/5670; Accuracy = 74.20%;loss =-8.77426039949669
-[25/03/27 16:56:18] [difo.py:  275]: Accuracy = 74.20% -> CLIP_Accuracy  = 73.03%
-[25/03/27 16:57:38] [difo.py:  220]: Task: RS, Iter:1890/5670; Accuracy = 74.76%;loss =-9.520504859223438
-[25/03/27 16:57:59] [difo.py:  275]: Accuracy = 74.76% -> CLIP_Accuracy  = 73.13%
-[25/03/27 16:59:19] [difo.py:  220]: Task: RS, Iter:2268/5670; Accuracy = 75.07%;loss =-10.557405966144913
-[25/03/27 16:59:41] [difo.py:  275]: Accuracy = 75.07% -> CLIP_Accuracy  = 73.28%
-[25/03/27 17:01:00] [difo.py:  220]: Task: RS, Iter:2646/5670; Accuracy = 75.36%;loss =-10.165574604480524
-[25/03/27 17:01:22] [difo.py:  275]: Accuracy = 75.36% -> CLIP_Accuracy  = 73.04%
+bottleneck: 512
+class_num: 12
+domain: ['train', 'validation']
+name: TV
+name_file: ./data/VISDA-C/classname.txt
+name_src: T
+output_dir: ./output/uda/VISDA-C/TV/difo
+output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/VISDA-C/T

@@ -1,5 +1,5 @@
-[25/03/27 10:20:15] [conf.py:  393]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
-[25/03/27 10:20:15] [conf.py:  394]: ADACONTRAST:
+[25/03/30 11:10:40] [conf.py:  393]: PyTorch Version: torch=2.4.1+cu121, cuda=12.1
+[25/03/30 11:10:40] [conf.py:  394]: ADACONTRAST:
   ALPHA: 1.0
   BETA: 1.0
   CE_SUP_TYPE: weak_strong
@@ -63,11 +63,11 @@ LCFD:
   LOSS_FUNC: sce
   N_CTX: 4
   TTA_STEPS: 1
-LOG_DEST: difo_250327_102015.txt
-LOG_TIME: 250327_102015
+LOG_DEST: difo_250330_111040.txt
+LOG_TIME: 250330_111040
 MODEL:
   ADAPTATION: source
-  ARCH: resnet50
+  ARCH: resnet101
   EPISODIC: False
   METHOD: difo
   WEIGHTS: IMAGENET1K_V1
@@ -119,11 +119,11 @@ SCLM:
   NEW_ENT_PAR: 0.3
   THRESHOLD: 0.0
 SETTING:
-  DATASET: domainnet126
+  DATASET: VISDA-C
   OUTPUT_SRC: source
   S: 0
   SEED: 2020
-  T: 2
+  T: 1
 SHOT:
   CLS_PAR: 0.3
   DISTANCE: cosine
@@ -156,12 +156,11 @@ TSD:
   LOAD: None
   N_CTX: 4
   TTA_STEPS: 1
-bottleneck: 256
-class_num: 126
-domain: ['clipart', 'painting', 'real', 'sketch']
-name: CR
-name_file: ./data/domainnet126/classname.txt
-name_src: C
-output_dir: ./output/uda/domainnet126/CR/difo
-output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/C
-[25/03/27 10:20:17] [model.py:  139]: Loaded from /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/domainnet126/C/best_clipart_2020.pth; missing params: []
+bottleneck: 512
+class_num: 12
+domain: ['train', 'validation']
+name: TV
+name_file: ./data/VISDA-C/classname.txt
+name_src: T
+output_dir: ./output/uda/VISDA-C/TV/difo
+output_dir_src: /mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/source/uda/VISDA-C/T
