@@ -80,6 +80,7 @@ class ImageList_idx(Dataset):
 
     def __getitem__(self, index):
         path, target = self.imgs[index]
+        # print(path)
         img = self.loader(path)
         if self.transform is not None:
             img = self.transform(img)

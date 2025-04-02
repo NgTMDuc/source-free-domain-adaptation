@@ -23,10 +23,10 @@ cfg = _C
 
 # Setting - see README.md for more information
 # Data directory
-_C.DATA_DIR = "/mnt/disk1/ducntm/DATA/"
+_C.DATA_DIR = "../DATA/"
 
 # Weight directory
-_C.CKPT_DIR = "/mnt/disk1/ducntm/source-free-domain-adaptation/ckpt/"
+_C.CKPT_DIR = "./ckpt/"
 
 # GPU id
 _C.GPU_ID = '0'
