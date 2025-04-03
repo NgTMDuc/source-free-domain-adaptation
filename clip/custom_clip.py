@@ -846,4 +846,4 @@ class ReCLIP(nn.Module):
         self.t_label_propagation = LabelPropagationCluster(
             self.v_model.classification_weight, len(test_dataset), k = args.Proposal.neighbor_size, alpha = args.Proposal.alpha, cut_dim = args.Proposal.cut_dim)
         
-        
+        # dataset_loader = 
