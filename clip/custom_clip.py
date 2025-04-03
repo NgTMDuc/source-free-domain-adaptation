@@ -5,12 +5,15 @@ from typing import List, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import numpy as np
+from scipy.sparse import eye
+from scipy.sparse import linalg as s_linalg
 from clip import load, tokenize
 from .simple_tokenizer import SimpleTokenizer as _Tokenizer
 from data.imagnet_prompts import imagenet_classes
 from data.fewshot_datasets import fewshot_datasets
 from data.cls_to_names import *
+import socket
 
 _tokenizer = _Tokenizer()
 # default templates provided by CLIP for ImageNet
@@ -663,3 +666,184 @@ class LabelPropagationCluster(nn.Module):
         self.classification_weight = classification_weight
         
         # parameters
+        self.feat_dim = classification_weight.size(0)
+        self.num_class = classification_weight.size(1)
+        self.num_neighbor = k
+        self.dataset_size = dataset_size
+        self.image_per_class = self.dataset_size // self.num_class
+        self.alpha = alpha
+        self.cut_dim = cut_dim
+        
+        # container for pseudo labels, features, etc
+        self.all_feat = []
+        self.idx_map = []
+        self.all_labels = {}
+        self.pseudo_labels = {i : 0  for i in range(self.dataset_size)}
+        self.confidence = {i : 0 for i in range(self.dataset_size)}
+        
+        # build projection
+        self.update_projection(classification_weight) # update projection matrix with current classification weights
+        self.update_centriods(classification_weight.t()) # update clustering centriods with current classification weight
+
+    def forward(self, x, idx, label):
+        # update features into memory
+        idx = list(idx.cpu().numpy())
+        label = list(label.cpu().numpy())
+        self.all_feat.append(x.detach())
+        self.idx_map.extend(idx)
+        bs = len(label)
+        for i in range(bs):
+            self.all_labels[idx[i]] = label[i]
+    
+    # use svd to compute projection matrix
+    def update_projection(self, classification_weight=None):
+        # classification_weight [768, class_num]
+        if(classification_weight is not None):
+            classification_weight = classification_weight
+        else:
+            classification_weight = self.centriods.t()
+
+        U, S, V = torch.svd(classification_weight.to(torch.float32)) # U [768, class]
+        self.projection_matrix = nn.Parameter((U[:,1:self.cut_dim] @ U[:,1:self.cut_dim].t()).to(torch.float16), requires_grad=False) # [768, 768]
+
+    # update clustering centriods
+    def update_centriods(self, centriods):
+        self.centriods = centriods
+
+    # return pseudo labels for examples of given indices
+    def get_pseudo_label(self, idx):
+        idx = list(idx.cpu().numpy())
+        pseudo_labels = [self.pseudo_labels[i] for i in idx]
+        pseudo_confdence = [self.confidence[i] for i in idx]
+        return pseudo_labels, pseudo_confdence
+
+    # calculate closed form solution for label propagation
+    def cg_diffusion(self, qsims, Wn, alpha = 0.99, maxiter = 20, tol = 1e-6):
+        Wnn = eye(Wn.shape[0]) - alpha * Wn
+        out_sims = []
+        for i in range(qsims.shape[0]):
+            f,inf = s_linalg.cg(Wnn, qsims[i,:], tol=tol, maxiter=maxiter)
+            out_sims.append(f.reshape(-1,1))
+        out_sims = np.concatenate(out_sims, axis = 1)
+        ranks = np.argsort(-out_sims, axis = 0)
+        return ranks, out_sims
+
+    # main function for label propagation
+    def perform_label_propagation(self, clear_cache=True, cluster_centriod=False):    
+        # stack all feat
+        self.all_feat_stack = torch.cat(self.all_feat, dim=0) # [all_feat]
+        
+        # assertion
+        num_record = self.all_feat_stack.size(0)
+        assert(len(self.idx_map) == num_record)
+        assert(len(self.all_labels) == num_record)
+        
+        # prepare features
+        all_points = torch.cat([self.centriods, self.all_feat_stack], dim=0).detach()
+        all_points_original = all_points.cpu().to(torch.float32)
+        all_points_project = all_points @ self.projection_matrix
+        all_points_project = (F.normalize(all_points_project, p=2, dim=-1)).cpu().to(torch.float32)
+        num_example = all_points_project.size(0)
+        
+        # affinty matrix
+        A = (all_points_project @ all_points_project.t() + 1) / 2
+        # remove diagonal
+        A = A * (1 - torch.eye(num_example)) 
+        # only keep topk nearest neighbors
+        topk_val, topk_idx = torch.topk(A, self.num_neighbor, dim=1)
+        topA = torch.zeros_like(A).scatter_(1, topk_idx, topk_val)
+        # symmentric
+        W = (topA + topA.t()) / 2
+        # normalize 
+        D = torch.diag(torch.diag((W @ torch.ones(num_example, num_example)) ** (-0.5)))
+        nW = D @ (W @ D)
+        # need to use scipy to solve linear system pW = Y
+        nw = nW.numpy()
+
+        # produce labels
+        Y = np.zeros((self.num_class, num_example))
+        for i in range(self.num_class):
+            Y[i,i] = 1
+
+        # perform cg optimization
+        _, out_sims = self.cg_diffusion(Y, nw, self.alpha)
+
+        # prediction
+        prediction = np.argmax(out_sims, axis=1) # [sample.]
+
+        # entropy
+        out_sims_normalized = (out_sims.T / out_sims.sum(axis=1)).T # row normaliz ranks
+        entropy = - out_sims_normalized * np.log(out_sims_normalized)
+        ent_confidence = 1 - entropy.sum(axis=1) / np.log(self.num_class)
+
+        # calculate clustering centriods to update ReCLIP-V classification weights
+        if(cluster_centriod):
+            new_centriods = self.centriods.clone()
+            for class_id in range(self.num_class):
+                current_class = (prediction == class_id)
+                num_current_class = np.sum(current_class)
+                current_class_conf = ent_confidence[current_class] # [num_current_class]
+                current_class_feat = all_points_original[current_class] # [num_current_class, 768]
+                sample_order = np.argsort(current_class_conf)[::-1]
+                sample_order = sample_order[:int(num_current_class)].copy()
+                current_centriods = current_class_feat[sample_order]
+                current_centriods = torch.mean(current_centriods, dim=0)
+                current_centriods = F.normalize(current_centriods.to(torch.float32), p=2, dim=0)
+                new_centriods[class_id,:] = current_centriods
+            
+        prediction = prediction[self.num_class:] # first num_class entries correspond to text embeddings of each class
+        ent_confidence = ent_confidence[self.num_class:] # first num_class entries correspond to text embeddings of each class
+
+        # save predictions & confidence
+        for i in range(len(prediction)):
+            self.pseudo_labels[self.idx_map[i]] = prediction[i]
+            self.confidence[self.idx_map[i]] = ent_confidence[i]
+
+        # pseudo label result
+        pseudo_label_acc = np.mean([self.pseudo_labels[i] == self.all_labels[i] for i in self.idx_map])
+        
+        # clean up the bucket for next round
+        if(clear_cache):
+            self.all_feat = []
+            self.idx_map = []
+
+        if(cluster_centriod):
+            return pseudo_label_acc, new_centriods
+        else:
+            return pseudo_label_acc 
+
+class ReCLIP(nn.Module):
+    def __init__(self, args, test_dataset ,device):
+        with open("./prompts/clip_prompts", "r") as filename:
+            names_prompts = json.load(filename)
+            class_names = names_prompts[args.dataset]["classes"]
+            templates = names_prompts[args.dataset]["templates"]
+        
+        
+        # Load the ReCLIP-V model
+        self.v_model = CLIP_LN_V(class_names = class_names, templates = templates, architecture = args.ProDe.ARCH, learnable_classifier=False)
+        if torch.cuda.is_available():
+            self.v_model.to(device)
+        
+        # Optimizer for ReCLIP-V visual-encoder layer-norm paramters
+        self.v_optimizer = torch.optim.SGD(self.v_model.learnable_params, args.ProDe.V_Encode, weight_decay = args.OPTIM.weight_decay, momentum = args.OPTIM.MOMENTUM)
+        
+        # Load the ReCLIP-T model
+        self.t_model = CLIP_LN_T(architecture = args.ProDe.ARCH, templates = templates)
+        if torch.cuda.is_available():
+            self.t_model.to(device)
+            
+        # Optimizer for ReCLIP-T text-encoder layer-norm parameters
+        self.t_optimizer = torch.optim.SGD(
+            self.t_model.learnable_params, args.ProDe.T_Encode, weight_decay = args.OPTIM.weight_decay, momentum = args.OPTIM.MOMENTUM)
+        
+        self.max_epoch = args.TEST.MAX_EPOCH
+        
+        self.v_label_propagation = LabelPropagationCluster(
+            self.v_model.classification_weight, len(test_dataset), k = args.Proposal.neighbor_size, alpha = args.Proposal.alpha, cut_dim = args.Proposal.cut_dim
+        )
+        
+        self.t_label_propagation = LabelPropagationCluster(
+            self.v_model.classification_weight, len(test_dataset), k = args.Proposal.neighbor_size, alpha = args.Proposal.alpha, cut_dim = args.Proposal.cut_dim)
+        
+        
