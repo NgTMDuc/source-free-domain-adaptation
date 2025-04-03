@@ -155,6 +155,7 @@ def test_time_adapt_eval(input, model, optimizer, optim_state, cfg, target_outpu
 def train_target(cfg):
     text_inputs = clip_pre_text(cfg)
     dset_loaders = data_load(cfg)
+    #Model has already pass the initialize of the prompt
     model = get_coop(cfg.ProDe.ARCH, cfg.SETTING.DATASET, int(cfg.GPU_ID), cfg.ProDe.N_CTX, cfg.ProDe.CTX_INIT)
     for name, param in model.named_parameters():
         if "prompt_learner" not in name:
@@ -360,7 +361,7 @@ class LabelProgationCluster(nn.Module):
         else:
             classification_weight = self.centriods.t()
         
-        U, S, V = torch.svd(classification_weight.to(torch.float32))
+        U, S, V = torch.linalg.svd(classification_weight.to(torch.float32))
         self.projection_matrix = nn.Parameter((U[:,1:self.cut_dim] @ U[:,1:self.cut_dim].t()).to(torch.float16), requires_grad=False) # [768, 768]
 
     def update_centriods(self, centriods):

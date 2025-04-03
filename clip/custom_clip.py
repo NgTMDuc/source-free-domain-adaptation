@@ -13,6 +13,94 @@ from data.fewshot_datasets import fewshot_datasets
 from data.cls_to_names import *
 
 _tokenizer = _Tokenizer()
+# default templates provided by CLIP for ImageNet
+clip_full_templates = [
+    'a bad photo of a {}.',
+    'a photo of many {}.',
+    'a sculpture of a {}.',
+    'a photo of the hard to see {}.',
+    'a low resolution photo of the {}.',
+    'a rendering of a {}.',
+    'graffiti of a {}.',
+    'a bad photo of the {}.',
+    'a cropped photo of the {}.',
+    'a tattoo of a {}.',
+    'the embroidered {}.',
+    'a photo of a hard to see {}.',
+    'a bright photo of a {}.',
+    'a photo of a clean {}.',
+    'a photo of a dirty {}.',
+    'a dark photo of the {}.',
+    'a drawing of a {}.',
+    'a photo of my {}.',
+    'the plastic {}.',
+    'a photo of the cool {}.',
+    'a close-up photo of a {}.',
+    'a black and white photo of the {}.',
+    'a painting of the {}.',
+    'a painting of a {}.',
+    'a pixelated photo of the {}.',
+    'a sculpture of the {}.',
+    'a bright photo of the {}.',
+    'a cropped photo of a {}.',
+    'a plastic {}.',
+    'a photo of the dirty {}.',
+    'a jpeg corrupted photo of a {}.',
+    'a blurry photo of the {}.',
+    'a photo of the {}.',
+    'a good photo of the {}.',
+    'a rendering of the {}.',
+    'a {} in a video game.',
+    'a photo of one {}.',
+    'a doodle of a {}.',
+    'a close-up photo of the {}.',
+    'a photo of a {}.',
+    'the origami {}.',
+    'the {} in a video game.',
+    'a sketch of a {}.',
+    'a doodle of the {}.',
+    'a origami {}.',
+    'a low resolution photo of a {}.',
+    'the toy {}.',
+    'a rendition of the {}.',
+    'a photo of the clean {}.',
+    'a photo of a large {}.',
+    'a rendition of a {}.',
+    'a photo of a nice {}.',
+    'a photo of a weird {}.',
+    'a blurry photo of a {}.',
+    'a cartoon {}.',
+    'art of a {}.',
+    'a sketch of the {}.',
+    'a embroidered {}.',
+    'a pixelated photo of a {}.',
+    'itap of the {}.',
+    'a jpeg corrupted photo of the {}.',
+    'a good photo of a {}.',
+    'a plushie {}.',
+    'a photo of the nice {}.',
+    'a photo of the small {}.',
+    'a photo of the weird {}.',
+    'the cartoon {}.',
+    'art of the {}.',
+    'a drawing of the {}.',
+    'a photo of the large {}.',
+    'a black and white photo of a {}.',
+    'the plushie {}.',
+    'a dark photo of a {}.',
+    'itap of a {}.',
+    'graffiti of the {}.',
+    'a toy {}.',
+    'itap of my {}.',
+    'a photo of a cool {}.',
+    'a photo of a small {}.',
+    'a tattoo of the {}.',
+]
+
+# default template provided by CLIP 
+clip_small_templates = [
+    'a photo of a {}.',
+]
 
 DOWNLOAD_ROOT='~/.cache/clip'
 
@@ -408,3 +496,170 @@ def get_coop(clip_arch, test_set, device, n_ctx, ctx_init, learned_cls=False):
 
     return model
 
+class CLIP_LN_V(nn.Module):
+    def __init__(self, device, class_names, architecture = "ViT-L/14", templates = clip_full_templates, learnable_classifier = None):
+        super().__init__()
+        self.device = device
+        # Load the CLIP checkpoint
+        self.base_model, self.preprocess = load(
+            download_root = DOWNLOAD_ROOT, name = architecture, device = device
+        )
+        
+        self.templates = templates
+        
+        # Produce the text embedding
+        with torch.no_grad():
+            class_embeddings = self.encode_text(class_names).detach()
+            
+        # # classification are set to not learnable by default, learnable_params is a dict of parameters for optimizer to know which parameter to update
+        if(learnable_classifier):
+            self.classification_weight = nn.Parameter(class_embeddings, requires_grad=True)
+            self.learnable_params = [self.classification_weight]
+        else:
+            self.classification_weight = class_embeddings
+            self.learnable_params = []
+        
+        self.setup_parameters()
+        
+    
+    def setup_parameters(self):
+        self.base_model.eval()
+        self.base_model.requires_grad_(False)
+        
+        for m in self.base_model.visual.modules():
+            if isinstance(m, torch.nn.LayerNorm) or isinstance(m, torch.nn.BatchNorm2d):
+                m.requires_grad_(True)
+                self.learnable_params.append(m.weight)
+                self.learnable_params.append(m.bias)
+    
+    def encode_text(self, classnames):
+        num_class = len(classnames)
+        zeroshot_weights = [] # expected size: [class_num * 1]
+        for classname in classnames:
+            if (isinstance(classname, list)):
+                all_prompts = [template.format(classna) for template in self.templates for classna in classname]
+            else:
+                all_prompts = [template.format(classname) for template in self.templates]
+            
+            all_tokens = tokenize(all_prompts).to(self.device)
+            class_embeddings  = self.base_model.encode_text(all_tokens)
+            
+            # Normalize -> Average -> Normalize
+            class_embeddings = F.normalize(class_embeddings, p = 2, dim = -1)
+            class_embeddings = class_embeddings.mean(dim = 0)
+            class_embeddings = F.normalize(class_embeddings, p = 2, dim = -1)
+            
+            zeroshot_weights.append(class_embeddings)
+        
+        zeroshot_weights = torch.stack(
+            zeroshot_weights, dim = 1
+        ).to(self.device)
+    
+
+        return zeroshot_weights
+
+    def encode_image(self, image):
+        image_features = self.base_model.encode_image(image)
+        image_features = F.normalize(image_features, p = 2, dim = 1)
+        return image_features
+    
+    def forward(self, image):
+        image_features = self.encode_image(image)
+        self.classification_weight = F.normalize(self.classification_weight, p=2, dim=0)
+        logits = 100. * image_features @ self.classification_weight
+        return logits, image_features
+
+class CLIP_LN_T(nn.Module):
+    def __init__(self, device, architecture='ViT-L/14', templates= clip_small_templates):
+        super().__init__()
+        
+        # Load the CLIP checkpoint
+        self.base_model, self.preprocess = load(download_root=DOWNLOAD_ROOT, name = architecture, device = device)
+        
+        # Load the templates provied by CLIP
+        self.templates = templates
+        self.short_templates = [self.templates[0]]
+        self.num_template = len(self.templates)
+        
+        # set-up parameters
+        self.learnable_params = []
+        self.setup_parapmeters()
+        
+    def setup_parameters(self):
+        self.base_model.eval()
+        self.base_model.requires_grad_(False)
+        self.learnable_params = []
+        
+        for m in self.base_model.transformer.modules():
+            if isinstance(m, torch.nn.LayerNorm):
+                m.requires_grad_(True)
+                self.learnable_params.append(m.weight)
+                self.learnable_params.append(m.bias)
+        self.base_model.ln_final.requires_grad_(True)
+        self.learnable_params.append(self.base_model.ln_final.weight)
+        self.learnable_params.append(self.base_model.ln_final.bias)
+        
+    # by default, use short template. Unless full_templates=True (used for producing projection matarix and clustering centriods)
+    def encode_text(self, classnames, full_templates=False):
+        # select template
+        if(full_templates):
+            curr_template = self.templates
+            # collect all prompts
+            zeroshot_weights = [] # expected size: [class_num * template_num]
+            num_class = len(classnames)
+            for classname in classnames:
+                if(isinstance(classname, list)):
+                    # prepare token then embedding
+                    all_prompts = [template.format(classna) for template in self.templates for classna in classname]
+                else:
+                    # prepare token then embedding
+                    all_prompts = [template.format(classname) for template in self.templates]
+                    
+                all_tokens = tokenize(all_prompts).to(self.device) # [template_num, 77]
+                class_embeddings = self.base_model.encode_text(all_tokens) # [num_prompts, 768]
+                # normalize, average, normalize again
+                class_embeddings = F.normalize(class_embeddings, p=2, dim=-1)
+                class_embeddings = class_embeddings.mean(dim=0) # [num_class, 768]
+                class_embeddings = F.normalize(class_embeddings, p=2, dim=-1)
+                zeroshot_weights.append(class_embeddings)
+            zeroshot_weights = torch.stack(zeroshot_weights, dim=1).to(self.device)
+            return zeroshot_weights
+        else:
+            curr_template = self.short_templates
+            curr_num_template = len(curr_template)
+            # collect all prompts
+            all_prompts = [] # expected size: [class_num * template_num]
+            num_class = len(classnames)
+            for classname in classnames:
+                all_prompts.extend([template.format(classname) for template in curr_template])
+            all_tokens = tokenize(all_prompts).to(self.device) # [class_num * template_num, 77]
+
+            # class embeddings
+            class_embeddings = self.base_model.encode_text(all_tokens) # [num_prompts, 768]
+            class_embeddings = class_embeddings.view(num_class, curr_num_template, -1)
+            
+            # normalize, average, normalize again
+            class_embeddings = F.normalize(class_embeddings, p=2, dim=-1)
+            class_embeddings = class_embeddings.mean(dim=1) # [num_class, 768]
+            class_embeddings = F.normalize(class_embeddings, p=2, dim=-1)
+            class_embeddings = class_embeddings.transpose(0,1)
+            return class_embeddings
+
+    def encode_image(self, image):
+        image_features = self.base_model.encode_image(image)
+        image_features = F.normalize(image_features, p=2, dim=1)
+        return image_features
+
+    def forward(self, image, class_names):
+        image_features = self.encode_image(image)
+        class_embedding = self.encode_text(class_names) # use generated text embeddings for classification
+        logits = 100. * image_features @ class_embedding
+        return logits, image_features
+
+class LabelPropagationCluster(nn.Module):
+    def __init__(self, device, classification_weight, dataset_size, k=10,  alpha=0.99, cut_dim=768):
+        super().__init__()
+        
+        self.classification_weight = classification_weight
+        
+        # parameters
