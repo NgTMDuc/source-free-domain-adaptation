@@ -166,7 +166,7 @@ def train_target(cfg):
     optimizer = op_copy(optimizer)
 
     loader = dset_loaders["target"]
-    num_sample=len(loader.dataset)
+    num_sample = len(loader.dataset) # Number of samples in thedataet
     score_bank = torch.randn(num_sample, cfg.class_num).cuda()
     netF.eval()
     netB.eval()

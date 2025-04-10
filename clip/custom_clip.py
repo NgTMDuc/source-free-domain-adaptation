@@ -664,8 +664,9 @@ class LabelPropagationCluster(nn.Module):
         super().__init__()
         
         self.classification_weight = classification_weight
+        self.device = device
         
-        # parameters
+        # parameters    
         self.feat_dim = classification_weight.size(0)
         self.num_class = classification_weight.size(1)
         self.num_neighbor = k
@@ -813,15 +814,22 @@ class LabelPropagationCluster(nn.Module):
             return pseudo_label_acc 
 
 class ReCLIP(nn.Module):
-    def __init__(self, args, test_dataset ,device):
+    def __init__(self, 
+                 args, 
+                 size_dataset, 
+                 test_loader ,
+                 epoch,
+                 device
+                 ):
+        super(ReCLIP, self).__init__()
         with open("./prompts/clip_prompts", "r") as filename:
             names_prompts = json.load(filename)
-            class_names = names_prompts[args.dataset]["classes"]
+            self.class_names = names_prompts[args.dataset]["classes"]
             templates = names_prompts[args.dataset]["templates"]
         
-        
+        self.device = device
         # Load the ReCLIP-V model
-        self.v_model = CLIP_LN_V(class_names = class_names, templates = templates, architecture = args.ProDe.ARCH, learnable_classifier=False)
+        self.v_model = CLIP_LN_V(class_names = self.class_names, templates = templates, architecture = args.ProDe.ARCH, learnable_classifier=False)
         if torch.cuda.is_available():
             self.v_model.to(device)
         
@@ -840,10 +848,85 @@ class ReCLIP(nn.Module):
         self.max_epoch = args.TEST.MAX_EPOCH
         
         self.v_label_propagation = LabelPropagationCluster(
-            self.v_model.classification_weight, len(test_dataset), k = args.Proposal.neighbor_size, alpha = args.Proposal.alpha, cut_dim = args.Proposal.cut_dim
+            self.v_model.classification_weight, 
+            size_dataset, 
+            k = args.Proposal.neighbor_size, 
+            alpha = args.Proposal.alpha, 
+            cut_dim = args.Proposal.cut_dim
         )
         
         self.t_label_propagation = LabelPropagationCluster(
-            self.v_model.classification_weight, len(test_dataset), k = args.Proposal.neighbor_size, alpha = args.Proposal.alpha, cut_dim = args.Proposal.cut_dim)
+            self.v_model.classification_weight, 
+            size_dataset, 
+            k = args.Proposal.neighbor_size, 
+            alpha = args.Proposal.alpha, 
+            cut_dim = args.Proposal.cut_dim)
         
-        # dataset_loader = 
+        self.size_dataset = size_dataset
+        self.test_dataset_loader = test_loader
+        self.best_acc = 0
+        self.epoch = epoch
+
+    def adaptation(self):
+        with torch.no_grad():
+            top1t, top1v, top1c, n = 0., 0., 0., 0
+            for images, labels, idx in self.test_dataset_loader:
+                images = images.to(self.device)
+                labels = labels.to(self.device)
+
+                #NOTE: Only forward to get the prediction
+                # Forward pass of the ReCLIP-T (text)
+                t_logits, t_feature = self.t_model(images, self.class_names)
+                t_acc = accuracy(t_logits, labels)[0]
+
+                # Forward pass of the ReCLIP-V (visual)
+                v_logits, v_feature = self.v_model(images)
+                v_acc = accuracy(v_logits, labels)[0]
+
+                # Update the lable propagation mododules with the visual features collected from ReCLIP-V and ReCLIP-T
+                self.t_label_propagation(t_feature, idx, labels)
+                self.v_label_propagation(v_feature, idx, labels)
+
+                # Combined logits for prediction
+                c_logits = 0.5 * (t_logits + v_logits)
+                c_acc = accuracy(c_logits, labels)[0]
+
+                # summary
+                top1t += t_acc
+                top1v += v_acc
+                top1c += c_acc
+                n += len(labels)
+            
+            # Perform label propagation
+            pt_acc = self.t_label_propagation.perform_label_propagation(clear_cache=True)
+
+            pv_acc, centroids = self.v_label_propagation.perform_label_propagation(clear_cache=True, cluster_centriod=True)
+
+            # Update the classification weight
+            self.v_model.classification_weight = centroids.t()
+
+            # Logging: update the best acc
+            if (100 * top1c / n > self.best_acc):
+                self.best_acc = 100 * top1c / n
+            
+            print(f"Epoch = {(self.epoch):d} Best Accuracy = {self.best_acc:.2f}%, Pseudo Label Accuracy (T/V) = {100 * pt_acc:.2f}%, {100 * pv_acc:.2f}%")
+
+    def train(self):
+        for images, labels, idx in self.test_dataset_loader:
+            images = images.to(self.device)
+            labels = labels.to(self.device)
+            
+            # Forward pass of the ReCLIP-T (text)
+            t_logits, _ = self.t_model(images, self.class_names)
+
+            # Forward pass of the ReCLIP-V (visual)
+            v_logits, _ = self.v_model(images)
+
+            # Get the pseudo labels for ReCLIP-T, based on current examples idx
+                
+def accuracy(output, target, topk=(1,)):
+    pred = output.topk(max(topk), 1, True, True)[1].t()
+    correct = pred.eq(target.view(1, -1).expand_as(pred))
+    return [float(correct[:k].reshape(-1).float().sum(0, keepdim=True).cpu().numpy()) for k in topk]
+
+        
