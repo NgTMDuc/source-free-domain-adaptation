@@ -96,6 +96,7 @@ dependencies:
       - torchaudio==2.1.0+cu118
       - torchsample==0.1.0
       - torchvision==0.16.0+cu118
+      - --extra-index-url https://download.pytorch.org/whl/cu118
       - tqdm==4.67.1
       - triton==2.1.0
       - uritemplate==4.1.1
