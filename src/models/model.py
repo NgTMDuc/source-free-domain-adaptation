@@ -10,7 +10,8 @@ from robustbench.model_zoo.architectures.utils_architectures import normalize_mo
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.utils import load_model
 from collections import OrderedDict
-
+from src.models.shot_model import OfficeHome_Shot_2
+import os
 from copy import deepcopy
 from src.models import resnet26
 from src.data.datasets.imagenet_subsets import IMAGENET_A_MASK, IMAGENET_R_MASK, IMAGENET_D109_MASK,IMAGENET_V_MASK
@@ -287,8 +288,12 @@ def get_model(cfg, num_classes):
     if cfg.SETTING.DATASET == "domainnet126":
         cfg.output_dir_src = osp.join(cfg.output_dir_src,'best_' + cfg.domain[cfg.SETTING.S] +'_2020.pth')
         base_model = ResNetDomainNet126(arch=cfg.MODEL.ARCH, checkpoint_path=cfg.output_dir_src, num_classes=num_classes)
-    elif cfg.SETTING.DATASET == "VISDA-C":
-        cfg.output_dir_src = osp.join(cfg.output_dir_src, "I/")
+    # elif cfg.SETTING.DATASET == "VISDA-C":
+    #     # cfg.output_dir_src = osp.join(cfg.output_dir_src)
+    #     base_model = OfficeHome_Shot_2()
+    #     base_model.netB.load_state_dict(torch.load(os.path.join(cfg.output_dir_src, "source_B.pt")))
+    #     base_model.netC.load_state_dict(torch.load(os.path.join(cfg.output_dir_src, "source_C.pt")))
+    #     base_model.netF.load_state_dict(torch.load(os.path.join(cfg.output_dir_src, "source_F.pt")))
     else:
         base_model = get_torchvision_model(cfg.MODEL.ARCH, weight_version=cfg.MODEL.WEIGHTS)
         layers = OrderedDict([

@@ -1,5 +1,5 @@
 DATASET="office-home" # imagenet_c domainnet126 officehome
-METHOD="ProDe"          # shot nrc plue difo ProDe
+METHOD="cowa"          # shot nrc plue difo ProDe
 
 echo DATASET: $DATASET
 echo METHOD: $METHOD

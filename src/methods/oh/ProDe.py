@@ -197,8 +197,11 @@ def train_target(cfg):
 
     optimizer = optim.SGD(param_group)
     optimizer = op_copy(optimizer)
+    
+    # Optimizer for prompt learner
     optimizer_ib = optim.SGD(param_group_ib)
     optimizer_ib = op_copy(optimizer_ib)
+    
     optim_state = deepcopy(optimizer_ib.state_dict())
     model.reset_classnames(cfg.classname, cfg.ProDe.ARCH)
     max_iter = cfg.TEST.MAX_EPOCH * len(dset_loaders["target"])

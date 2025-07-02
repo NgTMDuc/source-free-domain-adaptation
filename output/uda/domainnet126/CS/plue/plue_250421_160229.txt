@@ -1,0 +1,255 @@
+[25/04/21 16:02:29] [conf.py:  401]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/04/21 16:02:29] [conf.py:  402]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: ./ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.2
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: ../DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: plue_250421_160229.txt
+LOG_TIME: 250421_160229
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet50
+  EPISODIC: False
+  METHOD: plue
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 5
+  KK: 4
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.0001
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.001
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+PROPOSAL:
+  ALPHA: 0.99
+  ARCH: ViT-B/32
+  CUT_DIM: 768
+  NEIGHBOR_SIZE: 20
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: domainnet126
+  OUTPUT_SRC: source
+  S: 0
+  SEED: 2020
+  T: 3
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 15
+  MAX_EPOCH: 15
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 256
+class_num: 126
+domain: ['clipart', 'painting', 'real', 'sketch']
+name: CS
+name_file: ./data/domainnet126/classname.txt
+name_src: C
+output_dir: ./output/uda/domainnet126/CS/plue
+output_dir_src: ./ckpt/source/uda/domainnet126/C
+[25/04/21 16:02:30] [model.py:  142]: Loaded from ./ckpt/source/uda/domainnet126/C/best_clipart_2020.pth; missing params: []
+[25/04/21 16:04:13] [plue.py:  273]: 
+| Test Epoch #0	 Accuracy: 49.06%
+
+[25/04/21 16:06:32] [plue.py:  357]: Training acc = 48.44
+[25/04/21 16:08:17] [plue.py:  273]: 
+| Test Epoch #0	 Accuracy: 54.29%
+
+[25/04/21 16:08:17] [plue.py:  425]: EPOCH: 0/15 ACC 54.29%
+[25/04/21 16:10:34] [plue.py:  357]: Training acc = 49.43
+[25/04/21 16:12:18] [plue.py:  273]: 
+| Test Epoch #1	 Accuracy: 55.25%
+
+[25/04/21 16:12:18] [plue.py:  425]: EPOCH: 1/15 ACC 55.25%
+[25/04/21 16:14:34] [plue.py:  357]: Training acc = 49.30
+[25/04/21 16:16:18] [plue.py:  273]: 
+| Test Epoch #2	 Accuracy: 54.75%
+
+[25/04/21 16:16:18] [plue.py:  425]: EPOCH: 2/15 ACC 54.75%
+[25/04/21 16:18:35] [plue.py:  357]: Training acc = 49.46
+[25/04/21 16:20:18] [plue.py:  273]: 
+| Test Epoch #3	 Accuracy: 54.94%
+
+[25/04/21 16:20:18] [plue.py:  425]: EPOCH: 3/15 ACC 54.94%
+[25/04/21 16:22:35] [plue.py:  357]: Training acc = 48.98
+[25/04/21 16:24:19] [plue.py:  273]: 
+| Test Epoch #4	 Accuracy: 55.55%
+
+[25/04/21 16:24:19] [plue.py:  425]: EPOCH: 4/15 ACC 55.55%
+[25/04/21 16:26:35] [plue.py:  357]: Training acc = 49.15
+[25/04/21 16:28:21] [plue.py:  273]: 
+| Test Epoch #5	 Accuracy: 55.12%
+
+[25/04/21 16:28:21] [plue.py:  425]: EPOCH: 5/15 ACC 55.12%
+[25/04/21 16:30:36] [plue.py:  357]: Training acc = 48.46
+[25/04/21 16:32:25] [plue.py:  273]: 
+| Test Epoch #6	 Accuracy: 54.59%
+
+[25/04/21 16:32:25] [plue.py:  425]: EPOCH: 6/15 ACC 54.59%
+[25/04/21 16:34:41] [plue.py:  357]: Training acc = 48.29
+[25/04/21 16:36:28] [plue.py:  273]: 
+| Test Epoch #7	 Accuracy: 54.04%
+
+[25/04/21 16:36:28] [plue.py:  425]: EPOCH: 7/15 ACC 54.04%
+[25/04/21 16:38:45] [plue.py:  357]: Training acc = 48.22
+[25/04/21 16:40:31] [plue.py:  273]: 
+| Test Epoch #8	 Accuracy: 55.11%
+
+[25/04/21 16:40:31] [plue.py:  425]: EPOCH: 8/15 ACC 55.11%
+[25/04/21 16:42:48] [plue.py:  357]: Training acc = 47.96
+[25/04/21 16:44:36] [plue.py:  273]: 
+| Test Epoch #9	 Accuracy: 54.64%
+
+[25/04/21 16:44:36] [plue.py:  425]: EPOCH: 9/15 ACC 54.64%
+[25/04/21 16:46:53] [plue.py:  357]: Training acc = 47.45
+[25/04/21 16:48:40] [plue.py:  273]: 
+| Test Epoch #10	 Accuracy: 54.31%
+
+[25/04/21 16:48:40] [plue.py:  425]: EPOCH: 10/15 ACC 54.31%
+[25/04/21 16:51:00] [plue.py:  357]: Training acc = 47.05
+[25/04/21 16:52:52] [plue.py:  273]: 
+| Test Epoch #11	 Accuracy: 54.86%
+
+[25/04/21 16:52:52] [plue.py:  425]: EPOCH: 11/15 ACC 54.86%
+[25/04/21 16:55:10] [plue.py:  357]: Training acc = 46.58
+[25/04/21 16:57:06] [plue.py:  273]: 
+| Test Epoch #12	 Accuracy: 53.22%
+
+[25/04/21 16:57:07] [plue.py:  425]: EPOCH: 12/15 ACC 53.22%
+[25/04/21 16:59:24] [plue.py:  357]: Training acc = 46.23
+[25/04/21 17:01:13] [plue.py:  273]: 
+| Test Epoch #13	 Accuracy: 54.31%
+
+[25/04/21 17:01:13] [plue.py:  425]: EPOCH: 13/15 ACC 54.31%
+[25/04/21 17:03:30] [plue.py:  357]: Training acc = 45.83
+[25/04/21 17:05:15] [plue.py:  273]: 
+| Test Epoch #14	 Accuracy: 52.17%
+
+[25/04/21 17:05:15] [plue.py:  425]: EPOCH: 14/15 ACC 52.17%
+[25/04/21 17:07:32] [plue.py:  357]: Training acc = 45.12
+[25/04/21 17:09:23] [plue.py:  273]: 
+| Test Epoch #15	 Accuracy: 53.85%
+
+[25/04/21 17:09:23] [plue.py:  425]: EPOCH: 15/15 ACC 53.85%

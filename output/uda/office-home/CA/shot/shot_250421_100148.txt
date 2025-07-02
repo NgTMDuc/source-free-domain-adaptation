@@ -1,0 +1,201 @@
+[25/04/21 10:01:48] [conf.py:  401]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/04/21 10:01:48] [conf.py:  402]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: ./ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.2
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: ../DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: shot_250421_100148.txt
+LOG_TIME: 250421_100148
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet50
+  EPISODIC: False
+  METHOD: shot
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 5
+  KK: 4
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.01
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.001
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+PROPOSAL:
+  ALPHA: 0.99
+  ARCH: ViT-B/32
+  CUT_DIM: 768
+  NEIGHBOR_SIZE: 20
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: office-home
+  OUTPUT_SRC: source
+  S: 1
+  SEED: 2020
+  T: 0
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 15
+  MAX_EPOCH: 15
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 512
+class_num: 65
+domain: ['Art', 'Clipart', 'Product', 'RealWorld']
+name: CA
+name_file: ./data/office-home/classname.txt
+name_src: C
+output_dir: ./output/uda/office-home/CA/shot
+output_dir_src: ./ckpt/source/uda/office-home/C
+[25/04/21 10:01:59] [shot.py:  297]: Accuracy = 49.94% -> 56.61%
+[25/04/21 10:02:24] [shot.py:  230]: Task: CA, Iter:38/570; Accuracy = 65.72%
+[25/04/21 10:02:29] [shot.py:  297]: Accuracy = 65.72% -> 68.07%
+[25/04/21 10:02:46] [shot.py:  230]: Task: CA, Iter:76/570; Accuracy = 68.11%
+[25/04/21 10:02:52] [shot.py:  297]: Accuracy = 68.11% -> 68.81%
+[25/04/21 10:03:08] [shot.py:  230]: Task: CA, Iter:114/570; Accuracy = 68.52%
+[25/04/21 10:03:14] [shot.py:  297]: Accuracy = 68.52% -> 69.26%
+[25/04/21 10:03:30] [shot.py:  230]: Task: CA, Iter:152/570; Accuracy = 69.02%
+[25/04/21 10:03:36] [shot.py:  297]: Accuracy = 69.02% -> 69.39%
+[25/04/21 10:03:50] [shot.py:  230]: Task: CA, Iter:190/570; Accuracy = 69.10%
+[25/04/21 10:03:56] [shot.py:  297]: Accuracy = 69.10% -> 69.30%
+[25/04/21 10:04:12] [shot.py:  230]: Task: CA, Iter:228/570; Accuracy = 69.26%
+[25/04/21 10:04:18] [shot.py:  297]: Accuracy = 69.26% -> 69.18%
+[25/04/21 10:04:33] [shot.py:  230]: Task: CA, Iter:266/570; Accuracy = 69.34%
+[25/04/21 10:04:38] [shot.py:  297]: Accuracy = 69.34% -> 69.14%
+[25/04/21 10:04:55] [shot.py:  230]: Task: CA, Iter:304/570; Accuracy = 69.43%
+[25/04/21 10:05:01] [shot.py:  297]: Accuracy = 69.43% -> 69.18%
+[25/04/21 10:05:17] [shot.py:  230]: Task: CA, Iter:342/570; Accuracy = 69.47%
+[25/04/21 10:05:23] [shot.py:  297]: Accuracy = 69.47% -> 69.18%
+[25/04/21 10:05:39] [shot.py:  230]: Task: CA, Iter:380/570; Accuracy = 69.47%
+[25/04/21 10:05:45] [shot.py:  297]: Accuracy = 69.47% -> 69.22%
+[25/04/21 10:06:02] [shot.py:  230]: Task: CA, Iter:418/570; Accuracy = 69.39%
+[25/04/21 10:06:08] [shot.py:  297]: Accuracy = 69.39% -> 69.18%
+[25/04/21 10:06:24] [shot.py:  230]: Task: CA, Iter:456/570; Accuracy = 69.39%
+[25/04/21 10:06:30] [shot.py:  297]: Accuracy = 69.39% -> 69.18%
+[25/04/21 10:06:45] [shot.py:  230]: Task: CA, Iter:494/570; Accuracy = 69.43%
+[25/04/21 10:06:51] [shot.py:  297]: Accuracy = 69.43% -> 69.10%
+[25/04/21 10:07:05] [shot.py:  230]: Task: CA, Iter:532/570; Accuracy = 69.30%
+[25/04/21 10:07:11] [shot.py:  297]: Accuracy = 69.30% -> 69.10%
+[25/04/21 10:07:27] [shot.py:  230]: Task: CA, Iter:570/570; Accuracy = 69.10%

@@ -1,0 +1,337 @@
+[25/04/30 05:54:09] [conf.py:  412]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/04/30 05:54:09] [conf.py:  413]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: ./ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.3
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: ../DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: cowa_250430_055409.txt
+LOG_TIME: 250430_055409
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet50
+  EPISODIC: False
+  METHOD: cowa
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 5
+  KK: 4
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.01
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.001
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+PROPOSAL:
+  ALPHA: 0.99
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  CUT_DIM: 768
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  NEIGHBOR_SIZE: 20
+  N_CTX: 4
+  TTA_STEPS: 1
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: office-home
+  OUTPUT_SRC: source
+  S: 3
+  SEED: 2020
+  T: 0
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 30
+  MAX_EPOCH: 30
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 512
+class_num: 65
+domain: ['Art', 'Clipart', 'Product', 'RealWorld']
+name: RA
+name_file: ./data/office-home/classname.txt
+name_src: R
+output_dir: ./output/uda/office-home/RA/cowa
+output_dir_src: ./ckpt/source/uda/office-home/R
+[25/04/30 05:54:18] [cowa.py:  211]: soft_pseudo_label_Accuracy = 68.11%
+
+[25/04/30 05:54:18] [cowa.py:  221]: Model Prediction : Accuracy = 64.40%
+
+[25/04/30 05:54:28] [cowa.py:  383]: Task: RA, Iter:38/1140;
+[25/04/30 05:54:35] [cowa.py:  211]: soft_pseudo_label_Accuracy = 69.43%
+
+[25/04/30 05:54:35] [cowa.py:  221]: Model Prediction : Accuracy = 67.61%
+
+[25/04/30 05:54:42] [cowa.py:  383]: Task: RA, Iter:76/1140;
+[25/04/30 05:54:48] [cowa.py:  211]: soft_pseudo_label_Accuracy = 69.92%
+
+[25/04/30 05:54:48] [cowa.py:  221]: Model Prediction : Accuracy = 68.40%
+
+[25/04/30 05:54:55] [cowa.py:  383]: Task: RA, Iter:114/1140;
+[25/04/30 05:55:01] [cowa.py:  211]: soft_pseudo_label_Accuracy = 70.50%
+
+[25/04/30 05:55:01] [cowa.py:  221]: Model Prediction : Accuracy = 69.72%
+
+[25/04/30 05:55:08] [cowa.py:  383]: Task: RA, Iter:152/1140;
+[25/04/30 05:55:15] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.12%
+
+[25/04/30 05:55:15] [cowa.py:  221]: Model Prediction : Accuracy = 70.29%
+
+[25/04/30 05:55:22] [cowa.py:  383]: Task: RA, Iter:190/1140;
+[25/04/30 05:55:29] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.65%
+
+[25/04/30 05:55:29] [cowa.py:  221]: Model Prediction : Accuracy = 70.83%
+
+[25/04/30 05:55:36] [cowa.py:  383]: Task: RA, Iter:228/1140;
+[25/04/30 05:55:43] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.24%
+
+[25/04/30 05:55:43] [cowa.py:  221]: Model Prediction : Accuracy = 70.79%
+
+[25/04/30 05:55:51] [cowa.py:  383]: Task: RA, Iter:266/1140;
+[25/04/30 05:55:58] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.53%
+
+[25/04/30 05:55:58] [cowa.py:  221]: Model Prediction : Accuracy = 71.53%
+
+[25/04/30 05:56:06] [cowa.py:  383]: Task: RA, Iter:304/1140;
+[25/04/30 05:56:18] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.78%
+
+[25/04/30 05:56:18] [cowa.py:  221]: Model Prediction : Accuracy = 71.73%
+
+[25/04/30 05:56:30] [cowa.py:  383]: Task: RA, Iter:342/1140;
+[25/04/30 05:56:42] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.90%
+
+[25/04/30 05:56:42] [cowa.py:  221]: Model Prediction : Accuracy = 71.82%
+
+[25/04/30 05:56:50] [cowa.py:  383]: Task: RA, Iter:380/1140;
+[25/04/30 05:56:57] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.65%
+
+[25/04/30 05:56:57] [cowa.py:  221]: Model Prediction : Accuracy = 71.57%
+
+[25/04/30 05:57:04] [cowa.py:  383]: Task: RA, Iter:418/1140;
+[25/04/30 05:57:11] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.73%
+
+[25/04/30 05:57:11] [cowa.py:  221]: Model Prediction : Accuracy = 72.06%
+
+[25/04/30 05:57:19] [cowa.py:  383]: Task: RA, Iter:456/1140;
+[25/04/30 05:57:26] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.11%
+
+[25/04/30 05:57:26] [cowa.py:  221]: Model Prediction : Accuracy = 72.27%
+
+[25/04/30 05:57:34] [cowa.py:  383]: Task: RA, Iter:494/1140;
+[25/04/30 05:57:41] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.94%
+
+[25/04/30 05:57:41] [cowa.py:  221]: Model Prediction : Accuracy = 72.15%
+
+[25/04/30 05:57:48] [cowa.py:  383]: Task: RA, Iter:532/1140;
+[25/04/30 05:57:54] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.98%
+
+[25/04/30 05:57:54] [cowa.py:  221]: Model Prediction : Accuracy = 72.11%
+
+[25/04/30 05:58:01] [cowa.py:  383]: Task: RA, Iter:570/1140;
+[25/04/30 05:58:08] [cowa.py:  211]: soft_pseudo_label_Accuracy = 71.94%
+
+[25/04/30 05:58:08] [cowa.py:  221]: Model Prediction : Accuracy = 72.44%
+
+[25/04/30 05:58:15] [cowa.py:  383]: Task: RA, Iter:608/1140;
+[25/04/30 05:58:22] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.11%
+
+[25/04/30 05:58:22] [cowa.py:  221]: Model Prediction : Accuracy = 72.60%
+
+[25/04/30 05:58:29] [cowa.py:  383]: Task: RA, Iter:646/1140;
+[25/04/30 05:58:36] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.27%
+
+[25/04/30 05:58:36] [cowa.py:  221]: Model Prediction : Accuracy = 72.81%
+
+[25/04/30 05:58:42] [cowa.py:  383]: Task: RA, Iter:684/1140;
+[25/04/30 05:58:49] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.23%
+
+[25/04/30 05:58:49] [cowa.py:  221]: Model Prediction : Accuracy = 72.19%
+
+[25/04/30 05:58:56] [cowa.py:  383]: Task: RA, Iter:722/1140;
+[25/04/30 05:59:03] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.31%
+
+[25/04/30 05:59:03] [cowa.py:  221]: Model Prediction : Accuracy = 72.52%
+
+[25/04/30 05:59:10] [cowa.py:  383]: Task: RA, Iter:760/1140;
+[25/04/30 05:59:16] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.39%
+
+[25/04/30 05:59:16] [cowa.py:  221]: Model Prediction : Accuracy = 72.44%
+
+[25/04/30 05:59:23] [cowa.py:  383]: Task: RA, Iter:798/1140;
+[25/04/30 05:59:30] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.19%
+
+[25/04/30 05:59:30] [cowa.py:  221]: Model Prediction : Accuracy = 72.39%
+
+[25/04/30 05:59:37] [cowa.py:  383]: Task: RA, Iter:836/1140;
+[25/04/30 05:59:44] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.27%
+
+[25/04/30 05:59:44] [cowa.py:  221]: Model Prediction : Accuracy = 72.44%
+
+[25/04/30 05:59:51] [cowa.py:  383]: Task: RA, Iter:874/1140;
+[25/04/30 05:59:57] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.11%
+
+[25/04/30 05:59:57] [cowa.py:  221]: Model Prediction : Accuracy = 72.31%
+
+[25/04/30 06:00:03] [cowa.py:  383]: Task: RA, Iter:912/1140;
+[25/04/30 06:00:09] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.23%
+
+[25/04/30 06:00:09] [cowa.py:  221]: Model Prediction : Accuracy = 72.35%
+
+[25/04/30 06:00:16] [cowa.py:  383]: Task: RA, Iter:950/1140;
+[25/04/30 06:00:22] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.15%
+
+[25/04/30 06:00:22] [cowa.py:  221]: Model Prediction : Accuracy = 72.35%
+
+[25/04/30 06:00:29] [cowa.py:  383]: Task: RA, Iter:988/1140;
+[25/04/30 06:00:35] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.31%
+
+[25/04/30 06:00:35] [cowa.py:  221]: Model Prediction : Accuracy = 72.35%
+
+[25/04/30 06:00:41] [cowa.py:  383]: Task: RA, Iter:1026/1140;
+[25/04/30 06:00:48] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.15%
+
+[25/04/30 06:00:48] [cowa.py:  221]: Model Prediction : Accuracy = 72.52%
+
+[25/04/30 06:00:55] [cowa.py:  383]: Task: RA, Iter:1064/1140;
+[25/04/30 06:01:02] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.31%
+
+[25/04/30 06:01:02] [cowa.py:  221]: Model Prediction : Accuracy = 72.64%
+
+[25/04/30 06:01:09] [cowa.py:  383]: Task: RA, Iter:1102/1140;
+[25/04/30 06:01:16] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.15%
+
+[25/04/30 06:01:16] [cowa.py:  221]: Model Prediction : Accuracy = 72.60%
+
+[25/04/30 06:01:24] [cowa.py:  383]: Task: RA, Iter:1140/1140;
+[25/04/30 06:01:31] [cowa.py:  211]: soft_pseudo_label_Accuracy = 72.39%
+
+[25/04/30 06:01:31] [cowa.py:  221]: Model Prediction : Accuracy = 72.68%
+
+[25/04/30 06:01:32] [cowa.py:  415]: 
+Accuracies history : [64.4, 67.61, 68.4, 69.72, 70.29, 70.83, 70.79, 71.53, 71.73, 71.82, 71.57, 72.06, 72.27, 72.15, 72.11, 72.44, 72.6, 72.81, 72.19, 72.52, 72.44, 72.39, 72.44, 72.31, 72.35, 72.35, 72.35, 72.52, 72.64, 72.6, 72.68]
+

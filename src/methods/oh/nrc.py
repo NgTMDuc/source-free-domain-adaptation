@@ -80,8 +80,8 @@ def office_load_idx(cfg):
         s = cfg.type[cfg.SETTING.S]
         t = cfg.type[cfg.SETTING.T]
 
-        s_tr, s_ts = './src/data/data/office-home/{}_list.txt'.format(
-            s), './src/data/data/office-home/{}_list.txt'.format(s)
+        s_tr, s_ts = './data/office-home/{}_list.txt'.format(
+            s), './data/office-home/{}_list.txt'.format(s)
 
         txt_src = open(s_tr).readlines()
         dsize = len(txt_src)
@@ -89,8 +89,8 @@ def office_load_idx(cfg):
         s_tr = txt_src
         s_ts = txt_src
 
-        t_tr, t_ts = './src/data/data/office-home/{}_list.txt'.format(
-            t), './src/data/data/office-home/{}_list.txt'.format(t)
+        t_tr, t_ts = './data/office-home/{}_list.txt'.format(
+            t), './data/office-home/{}_list.txt'.format(t)
         prep_dict = {}
         prep_dict['source'] = image_train()
         prep_dict['target'] = image_target()
@@ -133,16 +133,20 @@ def train_target(cfg):
     dset_loaders = office_load_idx(cfg)
     ## set base network
 
-    netF = network.ResNet_FE().cuda()
-    oldC = network.feat_classifier(type="wn",
-                                   class_num=cfg.class_num,
-                                   bottleneck_dim=cfg.bottleneck).cuda()
-    
-    cfg.name = cfg.type[cfg.SETTING.S][0].lower()+'2' + cfg.type[cfg.SETTING.T][0].lower()
-    modelpath = cfg.CKPT_DIR +'/'+ cfg.SETTING.OUTPUT_SRC + '/' +cfg.name + '/source_F.pt'
+    # dset_loaders = data_load(cfg)
+    ## set base network
+    netF = network.ResBase(res_name=cfg.MODEL.ARCH).cuda()
+
+    netB = network.feat_bottleneck(type='bn', feature_dim=netF.in_features, bottleneck_dim=cfg.bottleneck).cuda()
+    netC = network.feat_classifier(type='wn', class_num = cfg.class_num, bottleneck_dim=cfg.bottleneck).cuda()
+
+    modelpath = cfg.output_dir_src + '/source_F.pt'
     netF.load_state_dict(torch.load(modelpath))
-    modelpath = cfg.CKPT_DIR +'/'+ cfg.SETTING.OUTPUT_SRC + '/' + cfg.name + '/source_C.pt'
-    oldC.load_state_dict(torch.load(modelpath))
+    modelpath = cfg.output_dir_src + '/source_B.pt'
+    netB.load_state_dict(torch.load(modelpath))
+    modelpath = cfg.output_dir_src + '/source_C.pt'
+    netC.load_state_dict(torch.load(modelpath))
+
 
     optimizer = optim.SGD(
         [

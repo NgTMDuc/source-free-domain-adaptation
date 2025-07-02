@@ -84,7 +84,7 @@ _C.SETTING.T = 1
 _C.SETTING.SEED = 2021
 
 #Sorce model directory
-_C.SETTING.OUTPUT_SRC = 'weight_512/seed2021'
+_C.SETTING.OUTPUT_SRC = 'source/'
 
 # ------------------------------- Optimizer options ------------------------- #
 _C.OPTIM = CfgNode()
@@ -248,6 +248,23 @@ _C.DIFO.ARCH = 'ViT-B/32' #['RN50', 'ViT-B/32','RN101','ViT-B/16']
 _C.DIFO.TTA_STEPS = 1
 _C.DIFO.IIC_PAR = 1.0
 _C.DIFO.LOAD = None
+
+# --------------------------------- Proposal options ----------------------------- #
+_C.PROPOSAL = CfgNode()
+
+_C.PROPOSAL.ENT = True
+_C.PROPOSAL.GENT = True
+_C.PROPOSAL.EPSILON = 1e-5
+_C.PROPOSAL.GENT_PAR = 0.1
+_C.PROPOSAL.CTX_INIT = 'a_photo_of_a' #initialize context 
+_C.PROPOSAL.N_CTX = 4 
+_C.PROPOSAL.ARCH = 'ViT-B/32' #['RN50', 'ViT-B/32','RN101','ViT-B/16']
+_C.PROPOSAL.TTA_STEPS = 1
+_C.PROPOSAL.IIC_PAR = 1.3
+_C.PROPOSAL.LOAD = None
+_C.PROPOSAL.NEIGHBOR_SIZE = 20
+_C.PROPOSAL.ALPHA = 0.99
+_C.PROPOSAL.CUT_DIM = 768
 # --------------------------------- TSD options ----------------------------- #
 _C.TSD = CfgNode()
 
@@ -335,6 +352,8 @@ def load_cfg_from_args():
     log_dest = log_dest.replace('.yaml', '_{}.txt'.format(current_time))
 
     cfg.bottleneck = 512
+    if cfg.SETTING.DATASET == "office31":
+        cfg.domain = [""]
     if cfg.SETTING.DATASET == 'office-home':
         cfg.domain = ['Art', 'Clipart', 'Product', 'RealWorld']
         cfg.class_num = 65 

@@ -406,13 +406,15 @@ def train(epoch, net, moco_model, optimizer, trainloader, banks, cfg, CE):
     moco_model.train()
     num_class = cfg.class_num
     for batch_idx, batch in enumerate(trainloader):
+        if len(batch) == 1:
+            continue
         imgs, y, idxs = batch
         y, idxs = y.long().cuda(), idxs.long().cuda()
         weak_x = imgs[1].cuda()
         strong_x = imgs[2].cuda()
         strong_x2 = imgs[3].cuda()
 
-        feats_w, logits_w = moco_model(weak_x, cls_only=True,dset = cfg.SETTING.DATASET)
+        feats_w, logits_w = moco_model(weak_x, cls_only=True, dset = cfg.SETTING.DATASET)
 
         if cfg.PLUE.LABEL_REFINEMENT:
             with torch.no_grad():

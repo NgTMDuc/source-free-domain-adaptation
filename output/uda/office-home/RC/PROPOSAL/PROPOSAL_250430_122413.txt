@@ -1,0 +1,210 @@
+[25/04/30 12:24:13] [conf.py:  412]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/04/30 12:24:13] [conf.py:  413]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: ./ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.2
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: ../DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: PROPOSAL_250430_122413.txt
+LOG_TIME: 250430_122413
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet50
+  EPISODIC: False
+  METHOD: PROPOSAL
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 5
+  KK: 4
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.005
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.001
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+PROPOSAL:
+  ALPHA: 0.99
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  CUT_DIM: 768
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  NEIGHBOR_SIZE: 20
+  N_CTX: 4
+  TTA_STEPS: 1
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: office-home
+  OUTPUT_SRC: source
+  S: 3
+  SEED: 2020
+  T: 1
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 30
+  MAX_EPOCH: 30
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 512
+class_num: 65
+domain: ['Art', 'Clipart', 'Product', 'RealWorld']
+name: RC
+name_file: ./data/office-home/classname.txt
+name_src: R
+output_dir: ./output/uda/office-home/RC/PROPOSAL
+output_dir_src: ./ckpt/source/uda/office-home/R
+[25/04/30 12:26:48] [proposal.py:  315]: Task: RC, Iter:69/2070; Accuracy = 54.89%;loss =-5.530256313512025
+[25/04/30 12:29:06] [proposal.py:  315]: Task: RC, Iter:138/2070; Accuracy = 56.04%;loss =-6.573638233223652
+[25/04/30 12:31:24] [proposal.py:  315]: Task: RC, Iter:207/2070; Accuracy = 56.17%;loss =-6.923064847822624
+[25/04/30 12:33:41] [proposal.py:  315]: Task: RC, Iter:276/2070; Accuracy = 56.77%;loss =-7.00868435329747
+[25/04/30 12:35:58] [proposal.py:  315]: Task: RC, Iter:345/2070; Accuracy = 57.14%;loss =-7.3704913712220765
+[25/04/30 12:38:15] [proposal.py:  315]: Task: RC, Iter:414/2070; Accuracy = 57.37%;loss =-7.370332288778918
+[25/04/30 12:40:34] [proposal.py:  315]: Task: RC, Iter:483/2070; Accuracy = 57.27%;loss =-7.400109125030712
+[25/04/30 12:42:52] [proposal.py:  315]: Task: RC, Iter:552/2070; Accuracy = 57.92%;loss =-7.424232484568362
+[25/04/30 12:45:11] [proposal.py:  315]: Task: RC, Iter:621/2070; Accuracy = 58.05%;loss =-7.343834347593103
+[25/04/30 12:47:29] [proposal.py:  315]: Task: RC, Iter:690/2070; Accuracy = 57.46%;loss =-7.333160015252913
+[25/04/30 12:49:46] [proposal.py:  315]: Task: RC, Iter:759/2070; Accuracy = 57.46%;loss =-7.557260077369863
+[25/04/30 12:52:04] [proposal.py:  315]: Task: RC, Iter:828/2070; Accuracy = 57.27%;loss =-8.049149861525454
+[25/04/30 12:54:23] [proposal.py:  315]: Task: RC, Iter:897/2070; Accuracy = 57.04%;loss =-7.72528980704068
+[25/04/30 12:56:40] [proposal.py:  315]: Task: RC, Iter:966/2070; Accuracy = 57.07%;loss =-7.954003433840084
+[25/04/30 12:58:58] [proposal.py:  315]: Task: RC, Iter:1035/2070; Accuracy = 56.86%;loss =-7.550954680397615
+[25/04/30 13:01:19] [proposal.py:  315]: Task: RC, Iter:1104/2070; Accuracy = 57.18%;loss =-7.678191536207611
+[25/04/30 13:03:36] [proposal.py:  315]: Task: RC, Iter:1173/2070; Accuracy = 57.09%;loss =-7.850110762106614
+[25/04/30 13:05:53] [proposal.py:  315]: Task: RC, Iter:1242/2070; Accuracy = 57.02%;loss =-7.568138291885689
+[25/04/30 13:08:11] [proposal.py:  315]: Task: RC, Iter:1311/2070; Accuracy = 56.84%;loss =-7.846826786174696
+[25/04/30 13:10:31] [proposal.py:  315]: Task: RC, Iter:1380/2070; Accuracy = 56.72%;loss =-7.882976631839906
+[25/04/30 13:12:54] [proposal.py:  315]: Task: RC, Iter:1449/2070; Accuracy = 56.43%;loss =-8.032451994062594
+[25/04/30 13:15:14] [proposal.py:  315]: Task: RC, Iter:1518/2070; Accuracy = 56.66%;loss =-8.169209646797235
+[25/04/30 13:17:34] [proposal.py:  315]: Task: RC, Iter:1587/2070; Accuracy = 56.22%;loss =-8.118271435589623
+[25/04/30 13:19:54] [proposal.py:  315]: Task: RC, Iter:1656/2070; Accuracy = 56.31%;loss =-8.07503624966795
+[25/04/30 13:22:15] [proposal.py:  315]: Task: RC, Iter:1725/2070; Accuracy = 56.31%;loss =-7.904991553303965
+[25/04/30 13:24:33] [proposal.py:  315]: Task: RC, Iter:1794/2070; Accuracy = 56.31%;loss =-8.104793513594084
+[25/04/30 13:26:51] [proposal.py:  315]: Task: RC, Iter:1863/2070; Accuracy = 56.13%;loss =-8.025191693105338
+[25/04/30 13:29:09] [proposal.py:  315]: Task: RC, Iter:1932/2070; Accuracy = 56.24%;loss =-7.854723716844597
+[25/04/30 13:31:31] [proposal.py:  315]: Task: RC, Iter:2001/2070; Accuracy = 55.99%;loss =-8.114961448741017
+[25/04/30 13:33:47] [proposal.py:  315]: Task: RC, Iter:2070/2070; Accuracy = 55.88%;loss =-8.013152517459815

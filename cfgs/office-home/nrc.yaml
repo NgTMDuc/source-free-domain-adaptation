@@ -1,12 +1,12 @@
 MODEL:
   ARCH: resnet50
-  METHOD: nrc
+  METHOD: nrc_vs
 SETTING:
   DATASET: office-home
   S: 0
   T: 1
   SEED: 2021
-  OUTPUT_SRC: weight_512/seed2021
+  OUTPUT_SRC: 'source/'
 OPTIM:
   METHOD: SGD
   MOMENTUM: 0.9

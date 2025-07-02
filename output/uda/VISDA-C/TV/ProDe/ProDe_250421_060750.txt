@@ -1,0 +1,201 @@
+[25/04/21 06:07:50] [conf.py:  401]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/04/21 06:07:50] [conf.py:  402]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: ./ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.2
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: ../DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: ProDe_250421_060750.txt
+LOG_TIME: 250421_060750
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet101
+  EPISODIC: False
+  METHOD: ProDe
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 5
+  KK: 4
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.005
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.001
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+PROPOSAL:
+  ALPHA: 0.99
+  ARCH: ViT-B/32
+  CUT_DIM: 768
+  NEIGHBOR_SIZE: 20
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.05
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: VISDA-C
+  OUTPUT_SRC: source
+  S: 0
+  SEED: 2020
+  T: 1
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 15
+  MAX_EPOCH: 15
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 512
+class_num: 12
+domain: ['train', 'validation']
+name: TV
+name_file: ./data/VISDA-C/classname.txt
+name_src: T
+output_dir: ./output/uda/VISDA-C/TV/ProDe
+output_dir_src: ./ckpt/source/uda/VISDA-C/T
+[25/04/21 06:27:28] [ProDe.py:  291]: Task: TV, Iter:866/12990; Accuracy = 89.14%;loss =-2.275068521499634
+97.61 88.17 84.99 81.23 97.8 97.01 92.51 85.58 92.44 95.35 91.12 65.81
+[25/04/21 06:42:07] [ProDe.py:  291]: Task: TV, Iter:1732/12990; Accuracy = 89.75%;loss =-2.200896739959717
+97.45 87.68 86.42 80.88 97.59 97.3 92.93 84.75 94.46 96.36 91.36 69.83
+[25/04/21 06:55:54] [ProDe.py:  291]: Task: TV, Iter:2598/12990; Accuracy = 90.17%;loss =-2.135449171066284
+97.72 89.73 87.33 82.08 97.89 97.54 93.25 84.82 94.2 96.49 93.37 67.57
+[25/04/21 07:10:39] [ProDe.py:  291]: Task: TV, Iter:3464/12990; Accuracy = 90.28%;loss =-2.409419059753418
+98.22 91.34 86.46 81.89 97.87 97.93 92.08 84.12 94.83 96.14 93.06 69.43
+[25/04/21 07:25:32] [ProDe.py:  291]: Task: TV, Iter:4330/12990; Accuracy = 90.34%;loss =-2.3490219116210938
+97.89 91.54 86.38 81.67 98.17 97.88 92.08 85.2 94.02 95.7 93.84 69.75
+[25/04/21 07:38:36] [ProDe.py:  291]: Task: TV, Iter:5196/12990; Accuracy = 90.53%;loss =-2.2873878479003906
+98.08 92.0 86.2 83.46 98.08 97.93 91.01 84.9 94.33 96.27 94.1 69.97
+[25/04/21 07:52:54] [ProDe.py:  291]: Task: TV, Iter:6062/12990; Accuracy = 90.74%;loss =-2.250455379486084
+98.24 92.6 86.55 80.06 98.23 97.98 91.74 85.0 93.87 96.49 94.24 73.85
+[25/04/21 08:07:53] [ProDe.py:  291]: Task: TV, Iter:6928/12990; Accuracy = 90.60%;loss =-2.537465810775757
+98.35 91.83 87.33 80.99 98.19 98.17 91.39 84.9 94.09 96.58 93.84 71.54
+[25/04/21 08:20:38] [ProDe.py:  291]: Task: TV, Iter:7794/12990; Accuracy = 90.74%;loss =-2.29658842086792
+98.44 91.08 86.38 82.62 97.78 98.07 93.2 84.92 94.09 96.27 94.55 71.54
+[25/04/21 08:34:08] [ProDe.py:  291]: Task: TV, Iter:8660/12990; Accuracy = 90.64%;loss =-2.0891079902648926
+98.16 91.91 85.48 82.15 98.12 97.98 92.15 84.9 94.35 96.84 94.24 71.41
+[25/04/21 08:48:39] [ProDe.py:  291]: Task: TV, Iter:9526/12990; Accuracy = 90.81%;loss =-2.303684711456299
+98.33 91.48 86.84 82.48 98.06 98.27 92.74 84.52 94.55 96.49 94.55 71.4
+[25/04/21 09:02:15] [ProDe.py:  291]: Task: TV, Iter:10392/12990; Accuracy = 90.80%;loss =-2.1280767917633057
+98.27 91.86 86.35 81.66 98.29 98.12 92.96 85.12 94.35 96.71 94.88 71.03
+[25/04/21 09:12:08] [ProDe.py:  291]: Task: TV, Iter:11258/12990; Accuracy = 90.67%;loss =-2.3603358268737793
+98.27 91.54 86.29 81.38 98.32 98.41 92.79 84.22 94.68 96.67 94.57 70.96
+[25/04/21 09:22:00] [ProDe.py:  291]: Task: TV, Iter:12124/12990; Accuracy = 90.93%;loss =-2.2565066814422607
+98.27 91.77 86.7 81.06 98.21 97.88 92.98 84.7 94.61 96.98 94.24 73.79
+[25/04/21 09:34:22] [ProDe.py:  291]: Task: TV, Iter:12990/12990; Accuracy = 90.81%;loss =-2.2396295070648193
+98.46 92.69 86.61 81.3 98.25 98.02 92.06 84.22 94.66 96.76 94.66 71.99

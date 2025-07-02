@@ -1,0 +1,187 @@
+[25/04/21 10:26:09] [conf.py:  401]: PyTorch Version: torch=2.1.0+cu118, cuda=11.8
+[25/04/21 10:26:09] [conf.py:  402]: ADACONTRAST:
+  ALPHA: 1.0
+  BETA: 1.0
+  CE_SUP_TYPE: weak_strong
+  CE_TYPE: standard
+  CONTRAST_TYPE: class_aware
+  DIST_TYPE: cosine
+  ETA: 1.0
+  FULL_PROGRESS: 0
+  GAMMA: 0.2
+  NUM_NEIGHBORS: 10
+  OPTIM_COS: True
+  OPTIM_EXP: False
+  REFINE_METHOD: nearest_neighbors
+  SCHEDULE: [10, 20]
+CKPT_DIR: ./ckpt/
+CKPT_PATH: 
+COWA:
+  ALPHA: 0.2
+  COEFF: JMDS
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  EPSILON2: 1e-06
+  PICKLE: False
+  WARM: 0.0
+CUDNN:
+  BENCHMARK: True
+DA: uda
+DATA_DIR: ../DATA/
+DESC: 
+DIFO:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+FOLDER: ./data/
+GKD:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+GPU_ID: 0
+ISSAVE: False
+LCFD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  LOSS_FUNC: sce
+  N_CTX: 4
+  TTA_STEPS: 1
+LOG_DEST: nrc_250421_102609.txt
+LOG_TIME: 250421_102609
+MODEL:
+  ADAPTATION: source
+  ARCH: resnet50
+  EPISODIC: False
+  METHOD: nrc
+  WEIGHTS: IMAGENET1K_V1
+NRC:
+  EPSILON: 1e-05
+  K: 4
+  KK: 5
+NUM_WORKERS: 4
+OPTIM:
+  DAMPENING: 0.0
+  LR: 0.0001
+  LR_DECAY1: 0.1
+  LR_DECAY2: 1
+  LR_DECAY3: 0.01
+  METHOD: SGD
+  MOMENTUM: 0.9
+  NESTEROV: True
+  WD: 0.0005
+PLUE:
+  CTR: True
+  EPSILON: 1e-05
+  LABEL_REFINEMENT: True
+  NEG_L: True
+  NUM_NEIGHBORS: 10
+  REWEIGHTING: True
+  TEMPORAL_LENGTH: 5
+PROPOSAL:
+  ALPHA: 0.99
+  ARCH: ViT-B/32
+  CUT_DIM: 768
+  NEIGHBOR_SIZE: 20
+ProDe:
+  ARCH: ViT-B/32
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 0.1
+  IIC_PAR: 1.3
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+SAVE_DIR: ./output
+SCLM:
+  CLS_PAR: 0.3
+  CLS_SNT: 0.1
+  CONFI_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  INITC_PAR: 0.3
+  NEW_ENT_PAR: 0.3
+  THRESHOLD: 0.0
+SETTING:
+  DATASET: domainnet126
+  OUTPUT_SRC: source
+  S: 0
+  SEED: 2021
+  T: 1
+SHOT:
+  CLS_PAR: 0.3
+  DISTANCE: cosine
+  ENT: True
+  ENT_PAR: 1.0
+  EPSILON: 1e-05
+  GENT: True
+  THRESHOLD: 0.0
+SOURCE:
+  EPSILON: 1e-05
+  TRTE: val
+TEST:
+  BATCH_SIZE: 64
+  INTERVAL: 15
+  MAX_EPOCH: 15
+TPDS:
+  DISTANCE: cosine
+  EPSILON: 1e-05
+  THRESHOLD: 0.0
+TSD:
+  ARCH: ViT-B/32
+  CLS_PAR: 0.4
+  CTX_INIT: a_photo_of_a
+  ENT: True
+  EPSILON: 1e-05
+  GENT: True
+  GENT_PAR: 1.0
+  IIC_PAR: 1.0
+  LENT_PAR: 0.05
+  LOAD: None
+  N_CTX: 4
+  TTA_STEPS: 1
+bottleneck: 256
+class_num: 126
+domain: ['clipart', 'painting', 'real', 'sketch']
+name: CP
+name_file: ./data/domainnet126/classname.txt
+name_src: C
+output_dir: ./output/uda/domainnet126/CP/nrc
+output_dir_src: ./ckpt/source/uda/domainnet126/C
+[25/04/21 10:26:09] [model.py:  142]: Loaded from ./ckpt/source/uda/domainnet126/C/best_clipart_2020.pth; missing params: []
+[25/04/21 10:29:22] [nrc.py:  285]: Task: CP, Iter:470/7050; Accuracy = 56.87%
+[25/04/21 10:32:03] [nrc.py:  285]: Task: CP, Iter:940/7050; Accuracy = 58.91%
+[25/04/21 10:34:43] [nrc.py:  285]: Task: CP, Iter:1410/7050; Accuracy = 60.20%
+[25/04/21 10:37:19] [nrc.py:  285]: Task: CP, Iter:1880/7050; Accuracy = 61.08%
+[25/04/21 10:40:01] [nrc.py:  285]: Task: CP, Iter:2350/7050; Accuracy = 61.39%
+[25/04/21 10:42:36] [nrc.py:  285]: Task: CP, Iter:2820/7050; Accuracy = 61.52%
+[25/04/21 10:45:11] [nrc.py:  285]: Task: CP, Iter:3290/7050; Accuracy = 62.04%
+[25/04/21 10:47:42] [nrc.py:  285]: Task: CP, Iter:3760/7050; Accuracy = 62.03%
+[25/04/21 10:50:19] [nrc.py:  285]: Task: CP, Iter:4230/7050; Accuracy = 62.06%
+[25/04/21 10:53:01] [nrc.py:  285]: Task: CP, Iter:4700/7050; Accuracy = 62.37%
+[25/04/21 10:55:45] [nrc.py:  285]: Task: CP, Iter:5170/7050; Accuracy = 62.37%
+[25/04/21 10:58:27] [nrc.py:  285]: Task: CP, Iter:5640/7050; Accuracy = 62.35%
+[25/04/21 11:01:05] [nrc.py:  285]: Task: CP, Iter:6110/7050; Accuracy = 62.45%
+[25/04/21 11:03:54] [nrc.py:  285]: Task: CP, Iter:6580/7050; Accuracy = 62.47%
+[25/04/21 11:06:38] [nrc.py:  285]: Task: CP, Iter:7050/7050; Accuracy = 62.56%
